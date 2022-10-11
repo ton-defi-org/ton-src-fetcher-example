@@ -6,7 +6,7 @@ export const toSha256Buffer = (s: string) => {
   return crypto.createHash("sha256").update(s).digest();
 };
 
-const SOURCES_REGISTRY = "EQBfL6AgP-lNiYXFADmcD5yFPwK9DXhaLNlZl-9cWJAJEmQe";
+const SOURCES_REGISTRY = "EQANJEwItCel0Pwle7fHaL1FRYC2dZyyzKCOqK2yjrMcxN-g";
 const VERIFIER_ID = "orbs.com";
 
 const tc = new TonClient({
@@ -20,7 +20,7 @@ async function getVerificationDataForContract(
     Address.parse(SOURCES_REGISTRY),
     "get_source_item_address",
     [
-      ["num", new BN(toSha256Buffer("orbs.com")).toString()], // TODO const
+      ["num", new BN(toSha256Buffer(VERIFIER_ID)).toString()],
       ["num", new BN(Buffer.from(codeCellHash, "base64")).toString(10)],
     ]
   );
@@ -32,13 +32,13 @@ async function getVerificationDataForContract(
     .readAddress()!;
 
   const isDeployed = await tc.isContractDeployed(sourceItemAddr);
-  console.log("isDeployed", isDeployed);
+  console.log("isDeployed", sourceItemAddr.toFriendly(), isDeployed);
 
   if (isDeployed) {
     const { stack: sourceItemDataStack } = await tc.callGetMethod(
       sourceItemAddr,
-      "get_nft_data"
-    ); // TODO rename
+      "get_source_item_data"
+    );
     const ipfsLink = Cell.fromBoc(
       Buffer.from(sourceItemDataStack[4][1].bytes, "base64")
     )[0]
@@ -55,5 +55,7 @@ async function getVerificationDataForContract(
 
 (async () => {
   const exampleCodeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
+  const nonExistentCodeCellHash = "/rX/aCDi/dddddd";
   await getVerificationDataForContract(exampleCodeCellHash);
+  await getVerificationDataForContract(nonExistentCodeCellHash);
 })();
