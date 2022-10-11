@@ -7,6 +7,7 @@ export const toSha256Buffer = (s: string) => {
 };
 
 const SOURCES_REGISTRY = "EQBfL6AgP-lNiYXFADmcD5yFPwK9DXhaLNlZl-9cWJAJEmQe";
+const VERIFIER_ID = "orbs.com";
 
 const tc = new TonClient({
   endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
@@ -19,7 +20,7 @@ async function getVerificationDataForContract(
     Address.parse(SOURCES_REGISTRY),
     "get_source_item_address",
     [
-      ["num", new BN(toSha256Buffer("orbs3.com")).toString()], // TODO const
+      ["num", new BN(toSha256Buffer("orbs.com")).toString()], // TODO const
       ["num", new BN(Buffer.from(codeCellHash, "base64")).toString(10)],
     ]
   );
