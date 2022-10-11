@@ -56,6 +56,8 @@ async function getVerificationDataForContract(
 (async () => {
   const exampleCodeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
   const nonExistentCodeCellHash = "/rX/aCDi/dddddd";
+  console.log("💎 Fetching IPFS link for an existing verified code cell hash")
   await getVerificationDataForContract(exampleCodeCellHash);
+  console.log("\n💎 Fetching IPFS link for a nonexistent code cell hash")
   await getVerificationDataForContract(nonExistentCodeCellHash);
 })();
