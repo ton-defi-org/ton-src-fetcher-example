@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@orbs-network/ton-gateway": "^1.2.3",
     "bn.js": "^5.2.1",
     "ton": "^12.1.3"
   },
